@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 const Uuid uuid = Uuid();
 // .yMD() is not constant, so we can't use it in the const constructor
-final DateFormat dateFormat = DateFormat.yMd();
+// final DateFormat dateFormat = DateFormat.yMd();
+final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
 enum Category {
   food,
