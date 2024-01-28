@@ -26,11 +26,26 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
+  void _openAddExpenseOverlay() {
+    // 화면 하단에서 올라오는 모달창
+    showBottomSheet(
+      context: context,
+      builder: (ctx) =>
+          const Text('Modal Bottom Sheet'), // ctx : showBottomSheet context
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Expense Tracker'),
+        actions: [
+          IconButton(
+            onPressed: _openAddExpenseOverlay,
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
