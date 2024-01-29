@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../utils/ansi_colors_debug.dart';
+import './model/expense.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key});
@@ -12,12 +13,38 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _ammountController = TextEditingController();
+  DateTime? _selectedDate;
 
   @override
   void dispose() {
     _titleController.dispose();
     _ammountController.dispose();
     super.dispose();
+  }
+
+  void _presentDatePicker() async {
+    final now = DateTime.now();
+    // 1년전 --> firstDate 와 lastDate( now ) 간의 간격을 1년으로 설정하기 위함.
+    final firstDate = DateTime(now.year - 1, now.month, now.day);
+
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: firstDate,
+      lastDate: now,
+    );
+
+    // showDatePicker(
+    //   context: context,
+    //   initialDate: now,
+    //   firstDate: firstDate,
+    //   lastDate: now,
+    // ).then((value) => ...);
+
+    // 선택된 날짜가 화면에 보이도록 함.
+    setState(() {
+      _selectedDate = pickedDate;
+    });
   }
 
   @override
@@ -34,19 +61,43 @@ class _NewExpenseState extends State<NewExpense> {
               label: Text('Title'),
             ),
           ),
-          TextField(
-            controller: _ammountController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              prefixText: '\$ ', // 접두문자
-              // labelText: 'Amount',
-              label: Text('Amount'),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _ammountController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    prefixText: '\$ ', // 접두문자
+                    // labelText: 'Amount',
+                    label: Text('Amount'),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 16.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(_selectedDate == null
+                      ? 'No Date Selected'
+                      : dateFormat.format(_selectedDate!)),
+                  IconButton(
+                    onPressed: _presentDatePicker,
+                    icon: const Icon(Icons.calendar_month),
+                  ),
+                ],
+              )
+            ],
           ),
           Row(
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context); // context 를 제거함.
+                },
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
@@ -62,8 +113,6 @@ class _NewExpenseState extends State<NewExpense> {
     );
   }
 }
-
-
 
 // class _NewExpenseState extends State<NewExpense> {
 //   String _enteredTitle = '';
