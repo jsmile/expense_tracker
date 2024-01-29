@@ -1,3 +1,4 @@
+import 'package:expense_tracker/src/expenses/new_expense.dart';
 import 'package:flutter/material.dart';
 
 import 'expense_list/expenses_list.dart';
@@ -30,8 +31,8 @@ class _ExpensesState extends State<Expenses> {
     // 화면 하단에서 올라오는 모달창
     showModalBottomSheet(
       context: context,
-      builder: (ctx) =>
-          const Text('Modal Bottom Sheet'), // ctx : showBottomSheet context
+      // ctx : showBottomSheet context
+      builder: (ctx) => const NewExpense(),
     );
   }
 
