@@ -28,7 +28,7 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     // 화면 하단에서 올라오는 모달창
-    showBottomSheet(
+    showModalBottomSheet(
       context: context,
       builder: (ctx) =>
           const Text('Modal Bottom Sheet'), // ctx : showBottomSheet context
