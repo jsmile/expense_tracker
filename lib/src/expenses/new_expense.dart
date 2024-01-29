@@ -51,8 +51,15 @@ class _NewExpenseState extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      // padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.only(
+          top: 16.0,
+          // softKeyboard 가 올라오면서 화면을 가리는 것을 방지.
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 16.0,
+          right: 16.0),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _titleController,
@@ -65,6 +72,7 @@ class _NewExpenseState extends State<NewExpense> {
           Row(
             children: [
               Expanded(
+                // Row 하위의 InputDecoration 과 관련된 error 방지.
                 child: TextField(
                   controller: _ammountController,
                   keyboardType: TextInputType.number,

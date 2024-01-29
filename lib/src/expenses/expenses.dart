@@ -31,6 +31,7 @@ class _ExpensesState extends State<Expenses> {
     // 화면 하단에서 올라오는 모달창
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       // ctx : showBottomSheet context
       builder: (ctx) => const NewExpense(),
     );
