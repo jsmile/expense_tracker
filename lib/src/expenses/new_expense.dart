@@ -48,6 +48,35 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
+  void _submitExpenseData() {
+    final isEmptyTitle = _titleController.text.trim().isEmpty;
+    final isNullDate = _selectedDate == null;
+    // double.tryParse( 'hello' ) --> null, double.tryParse( '12.3' ) --> 12.3
+    final enteredAmmount = double.tryParse(_ammountController.text);
+    final isInvaliedAmount = (enteredAmmount == null || enteredAmmount <= 0);
+
+    if (isEmptyTitle || isNullDate || isInvaliedAmount) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Alert Dialog'),
+          content: const Text(
+              'Please make sure valid title, date, amount, and category were entered. '),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+            ),
+          ],
+        ),
+      );
+
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -114,7 +143,7 @@ class _NewExpenseState extends State<NewExpense> {
                         child: Text(category.name.toUpperCase()),
                       ),
                     )
-                    .toList(),
+                    .toList(), // iterable --> list 로 변환
                 onChanged: (value) {
                   if (value == null) return;
                   setState(() {
@@ -130,9 +159,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
-                onPressed: () {
-                  debugPrint(success('### ${_titleController.text}'));
-                },
+                onPressed: _submitExpenseData,
                 child: const Text('Save Expense'),
               ),
             ],
