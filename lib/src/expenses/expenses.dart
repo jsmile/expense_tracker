@@ -52,17 +52,13 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Expense Tracker'),
-        actions: [
-          IconButton(
-            onPressed: _openAddExpenseOverlay,
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: Center(
+    // 그릴 때마다 mainContent 를 다시 그림  -> empty contents 검사 가능
+    Widget mainContent = const Center(
+      child: Text('No expense found. Start adding some.'),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -75,7 +71,20 @@ class _ExpensesState extends State<Expenses> {
             ),
           ],
         ),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Expense Tracker'),
+        actions: [
+          IconButton(
+            onPressed: _openAddExpenseOverlay,
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
+      body: mainContent,
     );
   }
 }
