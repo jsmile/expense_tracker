@@ -17,10 +17,40 @@ class App extends StatelessWidget {
       theme: ThemeData(useMaterial3: true).copyWith(
         // useMaterial3: true,  deprecated
         colorScheme: kColorScheme,
-        appBarTheme: const AppBarTheme(
+        appBarTheme: const AppBarTheme().copyWith(
           backgroundColor: kColorScheme.onPrimaryContainer,
           foregroundColor: kColorScheme.primaryContainer,
         ),
+        cardTheme: const CardTheme().copyWith(
+          color: kColorScheme.secondaryContainer,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 5.0,
+          ),
+        ),
+        // no ElevatedButtonThemeData() 에는 .copyWith() 가 없음.
+        // elevatedButtonTheme: ElevatedButtonThemeData().copyWith(),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kColorScheme.primaryContainer,
+          ),
+        ),
+        textTheme: ThemeData().textTheme.copyWith(
+              titleLarge: TextStyle(
+                // color: Colors.red, // forgroundColor 가 아닌 곳에서만 적용됨.
+                color: kColorScheme.secondaryContainer,
+                fontSize: 14.0,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+        // 아래와 같은 형식으로도 가능
+        // textTheme: ThemeData().textTheme.copyWith(
+        //       titleLarge: ThemeData().textTheme.titleLarge!.copyWith(
+        //             color: kColorScheme.secondaryContainer,
+        //             fontSize: 20.0,
+        //             fontWeight: FontWeight.bold,
+        //           ),
+        //     ),
       ), // 최신 버전에서는 기본값이 true
       home: const Expenses(),
     );
