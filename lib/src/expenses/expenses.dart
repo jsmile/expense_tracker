@@ -51,7 +51,7 @@ class _ExpensesState extends State<Expenses> {
       _registeredExpenses.remove(expense);
     });
 
-    ScaffoldMessenger.of(context).clearSnackBars(); // 기존 SnackBar 제거로 지연 표시 방지
+    ScaffoldMessenger.of(context).clearSnackBars(); //기존 SnackBar 제거로 연속작업 지연 방지
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 2),
