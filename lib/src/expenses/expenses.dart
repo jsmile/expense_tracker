@@ -33,8 +33,21 @@ class _ExpensesState extends State<Expenses> {
       context: context,
       isScrollControlled: true,
       // ctx : showBottomSheet context
-      builder: (ctx) => const NewExpense(),
+      // function 을 하위 위젯으로 전달하여, 하위 위젯에서 function 을 수행( 등록 )할 수 있도록 함.
+      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
     );
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
+
+  void _removeExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
   }
 
   @override
@@ -54,7 +67,12 @@ class _ExpensesState extends State<Expenses> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Chart'),
-            Expanded(child: ExpensesList(expenses: _registeredExpenses)),
+            Expanded(
+              child: ExpensesList(
+                expenses: _registeredExpenses,
+                onRemoveExpense: _removeExpense,
+              ),
+            ),
           ],
         ),
       ),

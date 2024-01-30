@@ -4,7 +4,9 @@ import '../utils/ansi_colors_debug.dart';
 import './model/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  final void Function(Expense) onAddExpense;
+
+  const NewExpense({super.key, required this.onAddExpense});
 
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -75,6 +77,17 @@ class _NewExpenseState extends State<NewExpense> {
 
       return;
     }
+
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text.trim(),
+        amount: enteredAmmount,
+        date: _selectedDate!,
+        category: _selectedCategory,
+      ),
+    );
+
+    Navigator.pop(context);
   }
 
   @override
@@ -83,10 +96,16 @@ class _NewExpenseState extends State<NewExpense> {
       // padding: const EdgeInsets.all(16.0),
       padding: EdgeInsets.only(
           top: 16.0,
-          // softKeyboard 가 올라오면서 화면을 가리는 것을 방지.
+          // 맨 아래 패딩이 보일 때 키보드 높이와 동일하게 되어 키보드가 위젯을 가리는 것을 방지.
           bottom: MediaQuery.of(context).viewInsets.bottom,
           left: 16.0,
           right: 16.0),
+      // padding: EdgeInsets.fromLTRB(
+      //   16.0,
+      //   16.0,
+      //   16.0,
+      //   MediaQuery.of(context).viewInsets.bottom,
+      // ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
