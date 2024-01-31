@@ -18,11 +18,11 @@ class App extends StatelessWidget {
         // useMaterial3: true,  deprecated
         colorScheme: kColorScheme,
         appBarTheme: const AppBarTheme().copyWith(
-          backgroundColor: kColorScheme.onPrimaryContainer,
-          foregroundColor: kColorScheme.primaryContainer,
+          backgroundColor: kColorScheme.primaryContainer, // appbar 배경색
+          foregroundColor: kColorScheme.onPrimaryContainer, // appbar title 색상
         ),
         cardTheme: const CardTheme().copyWith(
-          color: kColorScheme.secondaryContainer,
+          color: kColorScheme.secondaryContainer, // card 배경색
           margin: const EdgeInsets.symmetric(
             horizontal: 16.0,
             vertical: 5.0,
@@ -38,9 +38,9 @@ class App extends StatelessWidget {
         textTheme: ThemeData().textTheme.copyWith(
               titleLarge: TextStyle(
                 // color: Colors.red, // forgroundColor 가 아닌 곳에서만 적용됨.
-                color: kColorScheme.secondaryContainer,
-                fontSize: 14.0,
-                fontWeight: FontWeight.normal,
+                color: kColorScheme.onSecondaryContainer,
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
               ),
             ),
         // 아래와 같은 형식으로도 가능
