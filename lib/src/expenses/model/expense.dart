@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 const Uuid uuid = Uuid();
 // .yMD() is not constant, so we can't use it in the const constructor
@@ -37,4 +37,28 @@ class Expense {
   }) : id = const Uuid().v4();
 
   String get formattedDate => dateFormat.format(date);
+}
+
+class ExpenseBucket {
+  final Category category;
+  final List<Expense> expenses;
+
+  const ExpenseBucket({
+    required this.category,
+    required this.expenses,
+  });
+
+  ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
+      : expenses = allExpenses
+            .where((expense) => expense.category == category)
+            .toList();
+
+  double get categoryTotalExpenses {
+    double sum = 0.0;
+    for (final expense in expenses) {
+      sum += expense.amount;
+    }
+
+    return sum;
+  }
 }
