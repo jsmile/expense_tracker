@@ -31,6 +31,7 @@ class _ExpensesState extends State<Expenses> {
   void _openAddExpenseOverlay() {
     // 화면 하단에서 올라오는 모달창
     showModalBottomSheet(
+      useSafeArea: true,
       context: context,
       isScrollControlled: true,
       // ctx : showBottomSheet context
@@ -71,6 +72,7 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     // 그릴 때마다 mainContent 를 다시 그림  -> empty contents 검사 가능
     Widget mainContent = const Center(
       child: Text('No expense found. Start adding some.'),
@@ -78,18 +80,33 @@ class _ExpensesState extends State<Expenses> {
 
     if (_registeredExpenses.isNotEmpty) {
       mainContent = Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Chart(expenses: _registeredExpenses),
-            Expanded(
-              child: ExpensesList(
-                expenses: _registeredExpenses,
-                onRemoveExpense: _removeExpense,
+        child: width < 600
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Chart(expenses: _registeredExpenses),
+                  Expanded(
+                    child: ExpensesList(
+                      expenses: _registeredExpenses,
+                      onRemoveExpense: _removeExpense,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    // Chart 에 infinite width 가 있으므로 제한 필요
+                    child: Chart(expenses: _registeredExpenses),
+                  ),
+                  Expanded(
+                    child: ExpensesList(
+                      expenses: _registeredExpenses,
+                      onRemoveExpense: _removeExpense,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       );
     }
 

@@ -92,98 +92,106 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      // padding: const EdgeInsets.all(16.0),
-      padding: EdgeInsets.only(
-          top: 16.0,
-          // 맨 아래 패딩이 보일 때 키보드 높이와 동일하게 되어 키보드가 위젯을 가리는 것을 방지.
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-          left: 16.0,
-          right: 16.0),
-      // padding: EdgeInsets.fromLTRB(
-      //   16.0,
-      //   16.0,
-      //   16.0,
-      //   MediaQuery.of(context).viewInsets.bottom,
-      // ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _titleController,
-            maxLength: 50,
-            decoration: const InputDecoration(
-              // labelText: 'Title',
-              label: Text('Title'),
-            ),
-          ),
-          Row(
+    final swKeyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+
+    return SizedBox(
+      height: double.infinity, // 가능한 한 최고의 높이
+      // 스크롤 가능한 위젯
+      child: SingleChildScrollView(
+        child: Padding(
+          // padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.only(
+              top: 16.0,
+              // 맨 아래 패딩이 보일 때 키보드 높이와 동일하게 되어 키보드가 위젯을 가리는 것을 방지.
+              bottom: swKeyboardSpace + 16.0,
+              left: 16.0,
+              right: 16.0),
+          // padding: EdgeInsets.fromLTRB(
+          //   16.0,
+          //   16.0,
+          //   16.0,
+          //   MediaQuery.of(context).viewInsets.bottom,
+          // ),
+          child: Column(
+            // mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                // Row 하위의 InputDecoration 과 관련된 error 방지.
-                child: TextField(
-                  controller: _ammountController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    prefixText: '\$ ', // 접두문자
-                    // labelText: 'Amount',
-                    label: Text('Amount'),
-                  ),
+              TextField(
+                controller: _titleController,
+                maxLength: 50,
+                decoration: const InputDecoration(
+                  // labelText: 'Title',
+                  label: Text('Title'),
                 ),
               ),
-              const SizedBox(
-                width: 16.0,
-              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(_selectedDate == null
-                      ? 'No Date Selected'
-                      : dateFormat.format(_selectedDate!)),
-                  IconButton(
-                    onPressed: _presentDatePicker,
-                    icon: const Icon(Icons.calendar_month),
+                  Expanded(
+                    // Row 하위의 InputDecoration 과 관련된 error 방지.
+                    child: TextField(
+                      controller: _ammountController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        prefixText: '\$ ', // 접두문자
+                        // labelText: 'Amount',
+                        label: Text('Amount'),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(_selectedDate == null
+                          ? 'No Date Selected'
+                          : dateFormat.format(_selectedDate!)),
+                      IconButton(
+                        onPressed: _presentDatePicker,
+                        icon: const Icon(Icons.calendar_month),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 30.0),
+              Row(
+                children: [
+                  DropdownButton(
+                    value: _selectedCategory, // displayed & selected value
+                    // iterable --> list 로 변환
+                    items: Category.values
+                        .map(
+                          (category) => DropdownMenuItem(
+                            value: category, // inner value
+                            child: Text(category.name.toUpperCase()),
+                          ),
+                        )
+                        .toList(), // iterable --> list 로 변환
+                    onChanged: (value) {
+                      if (value == null) return;
+                      setState(() {
+                        _selectedCategory = value;
+                      });
+                    },
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // context 를 제거함.
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _submitExpenseData,
+                    child: const Text('Save Expense'),
                   ),
                 ],
               )
             ],
           ),
-          const SizedBox(height: 30.0),
-          Row(
-            children: [
-              DropdownButton(
-                value: _selectedCategory, // displayed & selected value
-                // iterable --> list 로 변환
-                items: Category.values
-                    .map(
-                      (category) => DropdownMenuItem(
-                        value: category, // inner value
-                        child: Text(category.name.toUpperCase()),
-                      ),
-                    )
-                    .toList(), // iterable --> list 로 변환
-                onChanged: (value) {
-                  if (value == null) return;
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                },
-              ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // context 를 제거함.
-                },
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: _submitExpenseData,
-                child: const Text('Save Expense'),
-              ),
-            ],
-          )
-        ],
+        ),
       ),
     );
   }
