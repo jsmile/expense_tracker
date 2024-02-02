@@ -92,6 +92,7 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
+    // When a mobile device's keyboard is visible viewInsets.bottom corresponds to the top of the keyboard.
     final swKeyboardSpace = MediaQuery.of(context).viewInsets.bottom;
 
     return LayoutBuilder(
